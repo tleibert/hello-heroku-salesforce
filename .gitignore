@@ -7,3 +7,4 @@ getting-started/*
 .venv/
 .vscode/
 .python-version
+.local_env

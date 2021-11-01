@@ -1,6 +1,9 @@
+import os
+
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import requests
+from simple_salesforce import Salesforce
 
 from .models import Greeting
 
@@ -8,9 +11,11 @@ from .models import Greeting
 def index(request):
     # return HttpResponse('Hello from Python!')
     # return render(request, "index.html")
-    r = requests.get('http://httpbin.org/status/418')
-    print(r.text)
-    return HttpResponse(f"<pre>{r.text}</pre>")
+    sf = Salesforce(username=os.getenv("SF_USERNAME"), password=os.getenv("SF_PASSWORD"), security_token=os.getenv("SF_TOKEN"))
+    sf_data = sf.query_all("SELECT Name FROM Contact")
+    # r = requests.get('http://httpbin.org/status/418')
+    # print(r.text)
+    return JsonResponse(sf_data)
 
 
 def db(request):
