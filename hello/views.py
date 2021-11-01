@@ -11,11 +11,16 @@ from .models import Greeting
 def index(request):
     # return HttpResponse('Hello from Python!')
     # return render(request, "index.html")
-    sf = Salesforce(username=os.getenv("SF_USERNAME"), password=os.getenv("SF_PASSWORD"), security_token=os.getenv("SF_TOKEN"))
+    sf = Salesforce(
+        username=os.getenv("SF_USERNAME"),
+        password=os.getenv("SF_PASSWORD"),
+        security_token=os.getenv("SF_TOKEN"),
+    )
     sf_data = sf.query_all("SELECT Name FROM Contact")
     # r = requests.get('http://httpbin.org/status/418')
     # print(r.text)
-    return JsonResponse(sf_data)
+    resp = "<h>My Salesforce Contacts</h>"
+    return HttpResponse(resp)
 
 
 def db(request):
