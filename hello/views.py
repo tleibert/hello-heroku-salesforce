@@ -31,7 +31,7 @@ def index(request):
     """
         for entry in sf_data["records"]
     ]
-    resp = """<h>My Salesforce Contacts</h>
+    resp = """<h>Trevor's Salesforce Contacts</h>
     <p>This data is pulled straight from salesforce through simple_salesforce!</p>
     <p>It's rendered through python f-strings right now, until I get the hang of django templating.</p>
     </br>
