@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from simple_salesforce import Salesforce
 
-from .tables import SalesforceData
 from .models import Greeting
 
 # Create your views here.
