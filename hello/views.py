@@ -1,10 +1,10 @@
 import os
 
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-import requests
+from django.http import HttpResponse
 from simple_salesforce import Salesforce
 
+from .tables import SalesforceData
 from .models import Greeting
 
 # Create your views here.
@@ -16,10 +16,37 @@ def index(request):
         password=os.getenv("SF_PASSWORD"),
         security_token=os.getenv("SF_TOKEN"),
     )
-    sf_data = sf.query_all("SELECT Name FROM Contact")
+    sf_data = sf.query_all("SELECT Name, Phone FROM Contact")
     # r = requests.get('http://httpbin.org/status/418')
     # print(r.text)
-    resp = "<h>My Salesforce Contacts</h>"
+
+    rows = [
+        f"""<tr>
+    <td>
+    {entry['Name']}
+    </td>
+    <td>
+    {entry['Phone']}
+    </td>
+    </tr>
+    """
+        for entry in sf_data["records"]
+    ]
+    resp = """<h>My Salesforce Contacts</h>
+    <p>This data is pulled straight from salesforce through simple_salesforce!</p>
+    <p>It's rendered through python f-strings right now, until I get the hang of django templating.</p>
+    </br>
+    <table>
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+    </tr>
+    {rows}
+    </table>
+    """.format(
+        rows="\n".join(rows)
+    )
+
     return HttpResponse(resp)
 
 
